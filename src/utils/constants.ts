@@ -1,0 +1,1 @@
+export const apiUrl = process.env.API_URL || 'https://fake-api.tractian.com';

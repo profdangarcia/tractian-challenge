@@ -1,8 +1,12 @@
 import Image from "next/image";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+
+import { fetchCompanies } from "../services/companies";
+import CompanySelector from "../components/CompanySelector";
+import { CompanyProvider } from "../contexts/CompanyContext";
+
 import "./globals.css";
-import Logo from "../../public/logo.png";
 
 const inter = localFont({
   src: "./fonts/InterVF.ttf",
@@ -21,25 +25,32 @@ export const metadata: Metadata = {
   description: "A Tree View Application that shows companies Assets",
 };
 
-export default function RootLayout({
+export const revalidate = 3600;
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const companies = await fetchCompanies();
+
   return (
     <html lang="en">
       <body
         className={`${inter.variable} ${robotoRegular.variable} antialiased`}
       >
-        <header className="bg-secondary p-4">
-          <Image
-            src={Logo}
-            alt="Tractian logomark"
-            width={102.95}
-            height={14}
-          />
-        </header>
-        {children}
+        <CompanyProvider>
+          <header className="bg-secondary p-4 flex items-center justify-between font-[family-name:var(--font-inter)]">
+            <Image
+              src="/logo.svg"
+              alt="Tractian logomark"
+              width={102.95}
+              height={14}
+            />
+            <CompanySelector companies={companies} />
+          </header>
+          {children}
+        </CompanyProvider>
       </body>
     </html>
   );

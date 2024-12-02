@@ -19,7 +19,7 @@ export default function CompanySelector({ companies }: CompanySelectorProps) {
         <button
           key={company.id}
           onClick={() => setSelectedCompany(company)}
-          className={`flex items-center justify-center gap-2 py-1 px-2 rounded-sm text-white font-semibold text-xs min-w-24 ${
+          className={`flex items-center justify-center gap-2 py-1 px-2 rounded-sm text-white font-semibold text-xs min-w-24 transition-opacity duration-200 hover:opacity-80 ${
             selectedCompany?.id === company.id ? "bg-primary" : "bg-blue-900"
           }`}
         >

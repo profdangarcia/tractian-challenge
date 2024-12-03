@@ -26,9 +26,9 @@ export const applyFilters = (node: TreeNode, filters: Filter): boolean => {
     node.visible = node.type !== "component" ? matchesNonComponent : isVisible;
 
     const hasChildren = node.children.length > 0;
-    const shouldFilterChildren = node.type !== "location" && node.visible;
+    const notFilterChildren = node.type === "location" && node.visible;
 
-    if(hasChildren && shouldFilterChildren){
+    if(hasChildren && !notFilterChildren){
       const childrenVisibility = node.children.map(child => applyFilters(child, filters));
       const hasVisibleChildren = childrenVisibility.some((isVisible) =>
         isVisible

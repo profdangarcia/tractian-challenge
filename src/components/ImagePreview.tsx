@@ -77,7 +77,7 @@ export default function ImagePreview() {
       <p className="text-sm text-primary">Adicionar imagem do Ativo</p>
     </div>
   ) : (
-    <div className="relative w-full min-h-56">
+    <div className="relative w-full min-h-56 rounded border-2 border-gray-200">
       <Image
         src={String(previewUrl)}
         alt={file?.name || ""}

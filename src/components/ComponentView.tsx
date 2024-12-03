@@ -11,6 +11,7 @@ import InfoItem from "./InfoItem";
 import ComponentHeader from "./ComponentHeader";
 
 import { IItem } from "../@types/IItem";
+import ImagePreview from "./ImagePreview";
 
 export default function ComponentView() {
   const { selectedItem, setSelectedItem } = useAssets();
@@ -28,8 +29,10 @@ export default function ComponentView() {
       {selectedItem.id && (
         <div className="p-6 flex flex-col">
           <div className="pb-6 border-b-2 border-gray-200 flex gap-6">
-            <h2 className="w-1/2">info</h2>
-            <div className="flex flex-col w-1/2">
+            <div className="w-1/3">
+              <ImagePreview />
+            </div>
+            <div className="flex flex-col w-2/3">
               <div className="border-b-2 border-gray-200 pb-6 mb-6">
                 <InfoItem
                   title="Tipo de Equipamento"

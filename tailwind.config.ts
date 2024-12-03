@@ -18,6 +18,7 @@ export default {
         "gray-600": "var(--gray-600)",
         "gray-300": "var(--gray-300)",
         "gray-200": "var(--gray-200)",
+        "blue-50": "var(--blue-50)",
         "success": "var(--success)",
         "error": "var(--error)",
       },

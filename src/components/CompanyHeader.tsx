@@ -1,19 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { BsLightning } from "react-icons/bs";
 import { PiWarningCircle } from "react-icons/pi";
 
 import FilterButton from "./FilterButton";
 import { useCompany } from "../contexts/CompanyContext";
+import { useAssets } from "../contexts/AssetsContext";
 
 export default function CompanyHeader() {
-  const [filters, setFilters] = useState({
-    energy: false,
-    critical: false
-  });
-
+  const {filters, setFilters} = useAssets();
   const { selectedCompany } = useCompany();
+  
   const companyName = selectedCompany
     ? `/ ${selectedCompany.name}`
     : "(selecione uma empresa)";

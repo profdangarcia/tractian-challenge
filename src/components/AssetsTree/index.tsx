@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiChevronRight, HiChevronDown } from "react-icons/hi2";
 
 import { ImCodepen } from "react-icons/im";
@@ -7,16 +7,21 @@ import { GoLocation } from "react-icons/go";
 import { BsLightningFill } from "react-icons/bs";
 import { IoCubeOutline } from "react-icons/io5";
 
-import { ILocation } from "../@types/ILocation";
-import { IItem } from "../@types/IItem";
+import { useAssets } from "../../contexts/AssetsContext";
+import { applyFilters } from "./helpers/applyFilters";
+import { buildTree } from "./helpers/buildTree";
 
-interface TreeNode {
+import { ILocation } from "../../@types/ILocation";
+import { IItem } from "../../@types/IItem";
+
+export interface TreeNode {
   id: string;
   name: string;
   type: "location" | "asset" | "component";
   sensorType: "energy" | "vibration" | null;
-  children: TreeNode[];
   status?: "operating" | "alert" | null;
+  visible: boolean;
+  children: TreeNode[];
 }
 
 interface AssetsTreeProps {
@@ -26,6 +31,8 @@ interface AssetsTreeProps {
 
 export default function AssetsTree({ locations, items }: AssetsTreeProps) {
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+  const [tree, setTree] = useState<TreeNode[]>([]);
+  const { filters } = useAssets();
 
   const toggleNode = (id: string) => {
     setExpandedNodes((prev) => {
@@ -39,66 +46,14 @@ export default function AssetsTree({ locations, items }: AssetsTreeProps) {
     });
   };
 
-  const buildTree = (): TreeNode[] => {
-    const locationMap = new Map<string, TreeNode>();
-    const itemMap = new Map<string, TreeNode>();
-
-    locations.forEach((location) => {
-      locationMap.set(location.id, {
-        id: location.id,
-        name: location.name,
-        type: "location",
-        sensorType: null,
-        children: [],
-      });
-    });
-
-    items.forEach((item) => {
-      itemMap.set(item.id, {
-        id: item.id,
-        name: item.name,
-        type: item.sensorType ? "component" : "asset",
-        sensorType: item.sensorType,
-        children: [],
-        status: item.status,
-      });
-    });
-
-    const rootNodes: TreeNode[] = [];
-
-    locations.forEach((location) => {
-      const node = locationMap.get(location.id)!;
-      if (location.parentId) {
-        const parentNode = locationMap.get(location.parentId);
-        if (parentNode) {
-          parentNode.children.push(node);
-        }
-      } else {
-        rootNodes.push(node);
-      }
-    });
-
-    items.forEach((item) => {
-      const node = itemMap.get(item.id)!;
-      if (item.locationId) {
-        const parentNode = locationMap.get(item.locationId);
-        if (parentNode) {
-          parentNode.children.push(node);
-        }
-      } else if (item.parentId) {
-        const parentNode = itemMap.get(item.parentId);
-        if (parentNode) {
-          parentNode.children.push(node);
-        }
-      } else {
-        rootNodes.push(node);
-      }
-    });
-
-    return rootNodes;
-  };
+  useEffect(() => {
+    const newTree = buildTree(locations, items);
+    newTree.forEach((node) => applyFilters(node, filters));
+    setTree(newTree);
+  }, [locations, items, filters]);
 
   const renderNode = (node: TreeNode) => {
+    if (!node.visible) return null;
     const isExpanded = expandedNodes.has(node.id);
     const hasChildren = node.children.length > 0;
     const isComponent = node.type === "component";
@@ -150,8 +105,6 @@ export default function AssetsTree({ locations, items }: AssetsTreeProps) {
       </div>
     );
   };
-
-  const tree = buildTree();
 
   return <div className="font-sans">{tree.map(renderNode)}</div>;
 }

@@ -8,10 +8,10 @@ export default function Home() {
         <div className="flex flex-col gap-3 border-gray-200 border-2 w-full rounded p-4">
           <CompanyHeader />
           <div className="flex gap-2 w-full h-full">
-            <div className="w-2/5">
+            <div className="w-1/5">
               <AssetsView />
             </div>
-            <div className="bg-yellow-50 w-3/5">bb</div>
+            <div className="bg-yellow-50 w-4/5">bb</div>
           </div>
         </div>
       </main>

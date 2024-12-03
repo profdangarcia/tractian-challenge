@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 
 import AssetsTree from "./AssetsTree";
+import SearchInput from "./SearchInput";
 import { fetchCompanyItems } from "../services/items";
 import { useCompany } from "../contexts/CompanyContext";
 import { fetchCompanyLocations } from "../services/locations";
@@ -37,7 +38,7 @@ export default function AssetsView() {
   return (
     <div className="flex flex-col border-gray-200 border-2 rounded h-full">
       <div className="border-gray-200 border-b-2 rounded">
-        <p>Busca</p>
+        <SearchInput />
       </div>
       <div className="py-2 px-1">
         <AssetsTree items={items} locations={locations}/>

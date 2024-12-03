@@ -112,7 +112,7 @@ export default function AssetsTree({ locations, items }: AssetsTreeProps) {
       >
         <div
           className={`flex items-center ${
-            isComponent ? "bg-primary cursor-pointer" : ""
+            isComponent ? "bg-primary cursor-pointer pl-1" : ""
           }`}
         >
           {hasChildren && (

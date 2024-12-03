@@ -14,6 +14,7 @@ export const buildTree = (locations: ILocation[], items: IItem[]): TreeNode[] =>
       sensorType: null,
       visible: true,
       children: [],
+      item: {} as IItem
     });
   });
 
@@ -26,6 +27,7 @@ export const buildTree = (locations: ILocation[], items: IItem[]): TreeNode[] =>
       status: item.status,
       visible: true,
       children: [],
+      item
     });
   });
 

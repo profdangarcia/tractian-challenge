@@ -22,6 +22,7 @@ export interface TreeNode {
   status?: "operating" | "alert" | null;
   visible: boolean;
   children: TreeNode[];
+  item: IItem;
 }
 
 interface AssetsTreeProps {
@@ -32,7 +33,7 @@ interface AssetsTreeProps {
 export default function AssetsTree({ locations, items }: AssetsTreeProps) {
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
   const [tree, setTree] = useState<TreeNode[]>([]);
-  const { filters } = useAssets();
+  const { filters, selectedItem, setSelectedItem } = useAssets();
 
   const toggleNode = (id: string) => {
     setExpandedNodes((prev) => {
@@ -57,18 +58,20 @@ export default function AssetsTree({ locations, items }: AssetsTreeProps) {
     const isExpanded = expandedNodes.has(node.id);
     const hasChildren = node.children.length > 0;
     const isComponent = node.type === "component";
+    const isSelected = selectedItem.id === node.id;
 
     return (
       <div
         key={node.id}
         className={`ml-4 text-sm font-[family-name:var(--font-roboto)] py-1 ${
-          isComponent ? "text-white" : "text-secondary"
+          isSelected ? "text-white" : "text-secondary"
         }`}
       >
         <div
           className={`flex items-center ${
-            isComponent ? "bg-primary cursor-pointer pl-1" : ""
-          }`}
+            isComponent ? "cursor-pointer pl-1" : ""
+          } ${isSelected && "bg-primary"}`}
+          onClick={isComponent ? () => setSelectedItem(node.item) : () => {}}
         >
           {hasChildren && (
             <span
@@ -85,7 +88,7 @@ export default function AssetsTree({ locations, items }: AssetsTreeProps) {
             <IoCubeOutline className="mr-1 text-xl text-primary" />
           )}
 
-          {isComponent && <ImCodepen className="mr-1 text-xl text-white" />}
+          {isComponent && <ImCodepen className={`mr-1 text-xl ${isSelected ? "text-white" : "text-primary"}`} />}
 
           <span className={`flex gap-2 items-center`}>
             {node.name}

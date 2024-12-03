@@ -1,5 +1,6 @@
 import AssetsView from "../components/AssetsView";
 import CompanyHeader from "../components/CompanyHeader";
+import ComponentView from "../components/ComponentView";
 import { AssetsProvider } from "../contexts/AssetsContext";
 
 export default function Home() {
@@ -13,7 +14,9 @@ export default function Home() {
               <div className="w-1/3">
                 <AssetsView />
               </div>
-              <div className="bg-yellow-50 w-2/3">bb</div>
+              <div className="w-2/3">
+                <ComponentView />
+              </div>
             </div>
           </AssetsProvider>
         </div>
